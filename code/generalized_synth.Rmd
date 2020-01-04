@@ -1,0 +1,68 @@
+---
+title: "gsynth"
+author: "Vinay Maruri"
+date: "December 15, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages('gsynth', type = 'source')
+```
+
+```{r}
+library(gsynth)
+```
+
+```{r}
+out <- gsynth(poverty_rate~T+epr+fem_pop_total+ba_or_higher+mer+union_members_percentage+dem_share+medicaid_expansion, data = synth_data, index = c("State","Year"), se = TRUE, na.rm = TRUE, inference = "parametric", r = c(0, 7), CV = TRUE, force = "unit", parallel = TRUE)
+```
+
+```{r}
+print(out)
+print(out$wgt.implied)
+print(out$est.beta)
+```
+
+```{r}
+plot(out, type = "counterfactual", raw = "all")
+plot(out, type="counterfactual", id = "Wisconsin")
+plot(out, type="counterfactual", id = "Indiana")
+plot(out, type="counterfactual", id = "Michigan")
+```
+
+```{r}
+out <- gsynth(log_pci~T+epr+fem_pop_total+ba_or_higher+mer+union_members_percentage+dem_share+medicaid_expansion, data = synth_data, index = c("State","Year"), se = TRUE, na.rm = TRUE, inference = "parametric", r = c(0, 7), CV = TRUE, force = "unit", parallel = TRUE)
+```
+
+```{r}
+print(out)
+print(out$wgt.implied)
+print(out$est.beta)
+plot(out, type = "counterfactual", raw = "all")
+plot(out, type="counterfactual", id = "Wisconsin")
+plot(out, type="counterfactual", id = "Indiana")
+plot(out, type="counterfactual", id = "Michigan")
+```
+
+```{r}
+out <- gsynth(log_snap~T+epr+fem_pop_total+ba_or_higher+mer+union_members_percentage+dem_share+medicaid_expansion, data = synth_data, index = c("State","Year"), se = TRUE, na.rm = TRUE, inference = "parametric", r = c(0, 7), CV = TRUE, force = "unit", parallel = TRUE)
+```
+
+```{r}
+print(out)
+print(out$wgt.implied)
+print(out$est.beta)
+```
+
+```{r}
+plot(out, type = "counterfactual", raw = "all")
+plot(out, type="counterfactual", id = "Wisconsin")
+plot(out, type="counterfactual", id = "Indiana")
+plot(out, type="counterfactual", id = "Michigan")
+```
+
+

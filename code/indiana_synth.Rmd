@@ -1,0 +1,405 @@
+---
+title: "indiana_synth"
+author: "Vinay Maruri"
+date: "12/15/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages("Synth")
+```
+
+```{r}
+library(Synth)
+```
+
+```{r}
+pov_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "poverty_rate",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2017
+   )
+```
+
+```{r}
+synth.out <- synth(pov_dataprep.out)
+```
+
+```{r}
+round(synth.out$solution.w,2)
+```
+
+```{r}
+synth.out$solution.v 
+```
+
+```{r}
+gaps<- pov_dataprep.out$Y1plot-(
+        pov_dataprep.out$Y0plot%*%synth.out$solution.w
+        ) ; gaps
+```
+
+```{r}
+synth.tables <- synth.tab(
+      dataprep.res = pov_dataprep.out,
+      synth.res = synth.out)
+
+print(synth.tables)
+```
+
+```{r}
+path.plot(dataprep.res = pov_dataprep.out,synth.res = synth.out, tr.intake = 2012, Xlab = c("Year"), Ylab = c("Poverty rate"), Main = c("Indiana Poverty Rate: Treated vs Synthetic Control"))
+```
+
+```{r}
+gaps.plot(dataprep.res = pov_dataprep.out,synth.res = synth.out, Xlab = c("Year"), Ylab = c("Gaps in Poverty rate"), Main = c("Indiana Poverty Rate Gaps: Treated - Synthetic Control"), tr.intake = 2012)
+```
+
+```{r}
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "annual_pci",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, tr.intake = 2012)
+```
+
+```{r}
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_pci",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Log per capita income"), Main = c("Indiana per capita income: Treated vs Synthetic Control"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Log per capita income"), Main = c("Gaps in Indiana per capita income: Treated - Synthetic Control"), tr.intake = 2012)
+```
+
+```{r}
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_snap",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Log of SNAP recipients"), Main = c("Indiana SNAP recipients: Treated vs Synthetic Control"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Log of SNAP recipients"), Main = c("Gaps in Indiana SNAP recipients: Treated - Synthetic Control"), tr.intake = 2012)
+```
+
+```{r}
+#sensitivity check: no ohio.
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_snap",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Log of SNAP recipients"), Main = c("Indiana SNAP recipients,  sensitivity check: no ohio"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Log of SNAP recipients"), Main = c("Gaps in Indiana SNAP recipients, sensitivity check: no ohio"), tr.intake = 2012)
+```
+
+```{r}
+#sensitivity check: no ohio.
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_pci",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Log of per capita income"), Main = c("Indiana per capita income, sensitivity check: no ohio"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Log of per capita income"), Main = c("Gaps in Indiana per capita income, sensitivity check: no ohio"), tr.intake = 2012)
+```
+
+```{r}
+#sensitivity check: no ohio.
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "poverty_rate",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2017
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Poverty Rate"), Main = c("Indiana Poverty Rate, sensitivity check: no ohio"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Poverty Rate"), Main = c("Gaps in Indiana Poverty Rate, sensitivity check: no ohio"), tr.intake = 2012)
+```
+```{r}
+print(pci_dataprep.out$Y1plot)
+print(pci_dataprep.out$Y0plot%*%pci.out$solution.w)
+```
+
+```{r}
+#sensitivity check: no Iowa
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_pci",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Log of per capita income"), Main = c("Indiana per capita income, sensitivity check: no iowa"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Log of per capita income"), Main = c("Gaps in Indiana per capita income, sensitivity check: no iowa"), tr.intake = 2012)
+```
+
+```{r}
+#sensitivity check: no Iowa
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_snap",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Log of SNAP recipients"), Main = c("Indiana SNAP recipients, sensitivity check: no iowa"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Log of SNAP recipients"), Main = c("Gaps in Indiana SNAP recipients, sensitivity check: no iowa"), tr.intake = 2012)
+```
+
+```{r}
+#sensitivity check: no Iowa
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "poverty_rate",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2017
+   )
+pci.out <- synth(pci_dataprep.out)
+round(pci.out$solution.w,2)
+gaps<- pci_dataprep.out$Y1plot-(
+        pci_dataprep.out$Y0plot%*%pci.out$solution.w
+        ) ; gaps
+pci.tables <- synth.tab(
+      dataprep.res = pci_dataprep.out,
+      synth.res = pci.out)
+
+print(pci.tables)
+path.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Poverty Rate"), Main = c("Indiana Poverty Rate, sensitivity check: no iowa"), tr.intake = 2012)
+gaps.plot(dataprep.res = pci_dataprep.out,synth.res = pci.out, Xlab = c("Year"), Ylab = c("Gaps in Poverty Rate"), Main = c("Gaps in Indiana Poverty Rate, sensitivity check: no iowa"), tr.intake = 2012)
+```
+
+```{r}
+library(SCtools)
+```
+```{r}
+#indiana placebo testing
+pov_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "poverty_rate",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2017
+   )
+pov_synth_out <- synth(pov_dataprep.out)
+tdf <- generate.placebos(pov_dataprep.out, pov_synth_out, Sigf.ipop = 2, strategy='multiprocess')
+plot_placebos(tdf,discard.extreme=TRUE, mspe.limit=2, xlab='Year', ylab = 'Gaps in Poverty Rate between Indiana and Control Units', title = 'Placebo test for Indiana poverty rates')
+```
+
+```{r}
+pci_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_pci",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+pci.out <- synth(pci_dataprep.out)
+tdf <- generate.placebos(pci_dataprep.out, pci.out, Sigf.ipop = 2, strategy='multiprocess')
+plot_placebos(tdf,discard.extreme=TRUE, mspe.limit=2, xlab='Year', ylab = 'Gaps in log per capita income between Indiana and Control Units', title = 'Placebo test for Indiana log per capita income')
+```
+
+```{r}
+snap_dataprep.out<-
+  dataprep(
+   foo = as.data.frame(indiana_synth),
+   predictors = c("epr", "fem_pop_total", "ba_or_higher", "mer", "union_members_percentage", "dem_share"),
+   predictors.op = "mean",
+   dependent = "log_snap",
+   unit.variable = "stateno",
+   time.variable = "Year",
+   treatment.identifier = 14,
+   controls.identifier = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 50),
+   time.predictors.prior = c(2001:2011),
+   time.optimize.ssr = c(2001:2011),
+   time.plot = 2001:2018
+   )
+snap.out <- synth(snap_dataprep.out)
+tdf <- generate.placebos(snap_dataprep.out, snap.out, Sigf.ipop = 2, strategy = 'multiprocess')
+plot_placebos(tdf,discard.extreme=TRUE, mspe.limit=2, xlab='Year', ylab = 'Gaps in the log of snap recipients between Indiana and Control Units', title = 'Placebo test for Indiana log snap recipients')
+```
+

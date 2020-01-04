@@ -1,0 +1,38 @@
+---
+title: "summary_stats"
+author: "Vinay Maruri"
+date: "12/17/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stargazer)
+```
+```{r}
+stargazer(as.data.frame(indiana_synth))
+```
+
+```{r}
+summary(synth_data)
+```
+
+```{r}
+summary(in_il_data)
+```
+
+```{r}
+summary(mi_oh_data)
+```
+
+```{r}
+summary(mn_wi_data)
+```
+
+```{r}
+summary(stag_data)
+```
+
