@@ -1,0 +1,190 @@
+---
+title: "synthetic"
+author: "Vinay Maruri"
+date: "December 3, 2019"
+output: html_document
+---
+
+
+
+
+```{r}
+library(AER)
+library(plm)
+library(stargazer)
+
+```
+
+```{r}
+mi_pov_0 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MI_YES_RTW, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pov_1 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MI_no_RTW, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pov_2 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+OH_RTW_pre, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pov_3 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+OH_RTW_post, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pci_0 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MI_YES_RTW, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pci_1 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MI_no_RTW, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pci_2 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+OH_RTW_pre, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_pci_3 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+OH_RTW_post, data = mi_oh_data, index = c("State", "Year"), model = "within")
+```
+
+```{r}
+mi_snap_0 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+mer+union_members_percentage+dem_share+medicaid_expansion+MI_no_RTW, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_snap_1 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+mer+union_members_percentage+dem_share+medicaid_expansion+MI_YES_RTW, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_snap_2 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+mer+union_members_percentage+dem_share+medicaid_expansion+OH_RTW_pre, data = mi_oh_data, index = c("State", "Year"), model = "within")
+mi_snap_3 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+mer+union_members_percentage+dem_share+medicaid_expansion+OH_RTW_post, data = mi_oh_data, index = c("State", "Year"), model = "within")
+```
+
+```{r}
+mn_pov_1 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+WI_YES_RTW, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_pov_2 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+WI_NO_RTW, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_pov_3 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MN_PRE_2015, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_pov_4 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MN_POST_2015, data = mn_wi_data, index = c("State", "Year"), model = "within")
+```
+
+```{r}
+mn_pci_1 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+WI_YES_RTW, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_pci_2 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+WI_NO_RTW, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_pci_3 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MN_PRE_2015, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_pci_4 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MN_POST_2015, data = mn_wi_data, index = c("State", "Year"), model = "within")
+```
+
+```{r}
+mn_snap_1 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+WI_YES_RTW, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_snap_2 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+WI_NO_RTW, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_snap_3 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MN_PRE_2015, data = mn_wi_data, index = c("State", "Year"), model = "within")
+mn_snap_4 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+MN_POST_2015, data = mn_wi_data, index = c("State", "Year"), model = "within")
+```
+
+
+```{r}
+il_pov_1 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IN_RTW_PRE, data = in_il_data, index = c("State", "Year"), model = "within")
+il_pov_2 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IN_RTW_POST, data = in_il_data, index = c("State", "Year"), model = "within")
+il_pov_3 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IL_PRE, data = in_il_data, index = c("State", "Year"), model = "within")
+il_pov_4 <- plm(poverty_rate~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IL_POST, data = in_il_data, index = c("State", "Year"), model = "within")
+```
+
+```{r}
+il_pci_1 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IN_RTW_PRE, data = in_il_data, index = c("State", "Year"), model = "within")
+il_pci_2 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IN_RTW_POST, data = in_il_data, index = c("State", "Year"), model = "within")
+il_pci_3 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IL_PRE, data = in_il_data, index = c("State", "Year"), model = "within")
+il_pci_4 <- plm(annual_pci~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IL_POST, data = in_il_data, index = c("State", "Year"), model = "within")
+```
+
+
+```{r}
+il_snap_1 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IN_RTW_PRE, data = in_il_data, index = c("State", "Year"), model = "within")
+il_snap_2 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IN_RTW_POST, data = in_il_data, index = c("State", "Year"), model = "within")
+il_snap_3 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IL_PRE, data = in_il_data, index = c("State", "Year"), model = "within")
+il_snap_4 <- plm(snap_users~epr+fem_pop_total+ba_or_higher+land_sq_mi+union_members_percentage+mer+dem_share+medicaid_expansion+IL_POST, data = in_il_data, index = c("State", "Year"), model = "within")
+```
+
+Table production
+
+```{r}
+library(sandwich)
+cov <- vcovHC(il_snap_1, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(il_snap_2, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(il_snap_3, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(il_snap_4, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(il_snap_1, il_snap_2, il_snap_3, il_snap_4, type="text", title = "Illinois/Indiana SNAP Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(il_pci_1, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(il_pci_2, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(il_pci_3, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(il_pci_4, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(il_pci_1, il_pci_2, il_pci_3, il_pci_4, type="text", title = "Illinois/Indiana per capita income Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(il_pov_1, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(il_pov_2, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(il_pov_3, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(il_pov_4, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(il_pov_1, il_pov_2, il_pov_3, il_pov_4, type="text", title = "Illinois/Indiana Poverty Rate Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(mi_pov_0, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(mi_pov_1, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(mi_pov_2, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(mi_pov_3, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(mi_pov_0, mi_pov_1, mi_pov_2, mi_pov_3, type="text", title = "Michigan/Ohio Poverty Rate Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(mi_pci_0, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(mi_pci_1, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(mi_pci_2, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(mi_pci_3, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(mi_pci_0, mi_pci_1, mi_pci_2, mi_pci_3, type="text", title = "Michigan/Ohio per capita Income Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(mi_snap_0, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(mi_snap_1, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(mi_snap_2, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(mi_snap_3, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(mi_snap_0, mi_snap_1, mi_snap_2, mi_snap_3, type="text", title = "Michigan/Ohio SNAP Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(mn_snap_1, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(mn_snap_2, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(mn_snap_3, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(mn_snap_4, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(mn_snap_1, mn_snap_2, mn_snap_3, mn_snap_4, type="text", title = "Minnesota/Wisconsin SNAP Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(mn_pov_1, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(mn_pov_2, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(mn_pov_3, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(mn_pov_4, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(mn_pov_1, mn_pov_2, mn_pov_3, mn_pov_4, type="text", title = "Minnesota/Wisconsin Poverty Rate Panel OLS Model", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+
+```{r}
+cov <- vcovHC(mn_pci_1, type = "HC1")
+il.snap.se.1 <- sqrt(diag(cov))
+cov <- vcovHC(mn_pci_2, type = "HC1")
+il.snap.se.2 <- sqrt(diag(cov))
+cov <- vcovHC(mn_pci_3, type = "HC1")
+il.snap.se.3 <- sqrt(diag(cov))
+cov <- vcovHC(mn_pci_4, type = "HC1")
+il.snap.se.4 <- sqrt(diag(cov))
+stargazer(mn_pci_1, mn_pci_2, mn_pci_3, mn_pci_4, type="text", title = "Minnesota/Wisconsin Per capita income Panel OLS Model Result Table", se=list(il.snap.se.1, il.snap.se.2, il.snap.se.3, il.snap.se.4), column.labels=c("HC1 robust SE", "HC1 robust SE", "HC1 robust SE", "HC1 robust SE"), align=TRUE)
+```
+

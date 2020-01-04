@@ -1,0 +1,98 @@
+---
+title: "staggered_did"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages("did")
+```
+
+```{r}
+library(did)
+```
+
+```{r}
+god_pls_work <- mp.spatt(poverty_rate ~ treat, xformla=~epr+fem_pop_total+ba_or_higher+dem_share, data=stag_data, panel=TRUE, first.treat.name="first.treat",idname="State",tname="Year", bstrap=FALSE, se=TRUE, cband=FALSE)
+```
+
+```{r}
+summary(god_pls_work$aggte, type="dynamic")
+```
+
+```{r}
+summary(god_pls_work)
+```
+
+```{r}
+library(gridExtra)
+ggdid(god_pls_work)
+```
+
+```{r}
+ggdid(god_pls_work, type="dynamic")
+```
+
+```{r}
+stag_data <- as.data.frame(stag_data)
+
+test <- mp.spatt.test(poverty_rate ~ treat, xformlalist = list(~epr+fem_pop_total+ba_or_higher+dem_share, ~epr+fem_pop_total), data=stag_data, panel=TRUE, first.treat.name="first.treat",idname="stateno",tname="Year", clustervarlist=list(NULL))
+```
+
+```{r}
+summary(test[[1]])
+```
+
+```{r}
+pci_work <- mp.spatt(annual_pci ~ treat, xformla=~epr+fem_pop_total+ba_or_higher+dem_share, data=stag_data, panel=TRUE, first.treat.name="first.treat",idname="State",tname="Year", bstrap=FALSE, se=TRUE, cband=FALSE)
+```
+
+```{r}
+summary(pci_work$aggte, type="dynamic")
+```
+
+```{r}
+summary(pci_work)
+```
+
+```{r}
+ggdid(pci_work)
+```
+
+```{r}
+ggdid(pci_work, type="dynamic")
+```
+
+```{r}
+pci_test <- mp.spatt.test(annual_pci ~ treat, xformlalist = list(~epr+fem_pop_total+ba_or_higher+dem_share, ~epr+fem_pop_total), data=stag_data, panel=TRUE, first.treat.name="first.treat",idname="stateno",tname="Year", clustervarlist=list(NULL))
+summary(pci_test[[1]])
+```
+
+```{r}
+snap_work <- mp.spatt(snap_users ~ treat, xformla=~epr+fem_pop_total+ba_or_higher+dem_share, data=stag_data, panel=TRUE, first.treat.name="first.treat",idname="State",tname="Year", bstrap=FALSE, se=TRUE, cband=FALSE)
+```
+
+```{r}
+summary(snap_work)
+```
+
+```{r}
+summary(snap_work$aggte, type="dynamic")
+```
+
+```{r}
+ggdid(snap_work)
+```
+
+```{r}
+ggdid(snap_work, type="dynamic")
+```
+
+```{r}
+snap_test <- mp.spatt.test(snap_users ~ treat, xformlalist = list(~epr+fem_pop_total+ba_or_higher+dem_share, ~epr+fem_pop_total), data=stag_data, panel=TRUE, first.treat.name="first.treat",idname="stateno",tname="Year", clustervarlist=list(NULL))
+summary(snap_test[[1]])
+```
+
